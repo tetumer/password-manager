@@ -13,7 +13,8 @@ if os.path.exists("vault.dat"):
     old_ciphertext = data[28:]
 
     master_password = getpass.getpass("Enter master password: ").encode()
-    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
+    iterations = int(input("Enter iteration count: "))
+    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=iterations)
     key = kdf.derive(master_password)
 
     aesgcm = AESGCM(key)
@@ -22,7 +23,8 @@ if os.path.exists("vault.dat"):
 else:
     salt = os.urandom(16)
     master_password = getpass.getpass("Set a new master password: ").encode()
-    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=480000)
+    iterations = int(input("Enter iteration count: "))
+    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=iterations)
     key = kdf.derive(master_password)
     vault_data = {}
 
